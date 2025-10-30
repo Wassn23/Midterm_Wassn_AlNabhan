@@ -1,24 +1,69 @@
 package com.wassn.midterm;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    EditText edtNumber;
+    Button btnGenerate, btnHistory;
+    ListView listView;
+    ArrayList<String> historyList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+
+        edtNumber = findViewById(R.id.edtNumber);
+        btnGenerate = findViewById(R.id.btnGenerate);
+        btnHistory = findViewById(R.id.btnHistory);
+        listView = findViewById(R.id.listView);
+
+        btnGenerate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String input = edtNumber.getText().toString();
+                if (input.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Please enter a number", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                int number = Integer.parseInt(input);
+                ArrayList<String> tableList = new ArrayList<>();
+                for (int i = 1; i <= 12; i++) {
+                    tableList.add(number + " x " + i + " = " + (number * i));
+                }
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this,
+                        android.R.layout.simple_list_item_1, tableList);
+                listView.setAdapter(adapter);
+
+                historyList.add("Table of " + number);
+            }
+        });
+
+        btnHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (historyList.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "No history yet", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this,
+                        android.R.layout.simple_list_item_1, historyList);
+                listView.setAdapter(adapter);
+            }
         });
     }
 }
