@@ -13,10 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
+    // declare ui componets
     EditText edtNumber;
     Button btnGenerate, btnHistory;
     ListView listView;
+
     ArrayList<String> historyList = new ArrayList<>();
 
     @Override
@@ -24,11 +25,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //link java with elements
         edtNumber = findViewById(R.id.edtNumber);
         btnGenerate = findViewById(R.id.btnGenerate);
         btnHistory = findViewById(R.id.btnHistory);
         listView = findViewById(R.id.listView);
 
+        //make multiplaction table
         btnGenerate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 historyList.add("Table of " + number);
             }
         });
+        // delete item
         listView.setOnItemClickListener((parent, view, position, id) -> {
             String selectedItem = (String) parent.getItemAtPosition(position);
 
