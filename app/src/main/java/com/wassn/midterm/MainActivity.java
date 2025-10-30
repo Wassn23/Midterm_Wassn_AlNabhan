@@ -51,6 +51,20 @@ public class MainActivity extends AppCompatActivity {
                 historyList.add("Table of " + number);
             }
         });
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            String selectedItem = (String) parent.getItemAtPosition(position);
+
+            new android.app.AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Delete Item")
+                    .setMessage("Do you want to delete \"" + selectedItem + "\"?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        ((ArrayAdapter) parent.getAdapter()).remove(selectedItem);
+                        ((ArrayAdapter) parent.getAdapter()).notifyDataSetChanged();
+                        Toast.makeText(MainActivity.this, "Deleted: " + selectedItem, Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        });
 
         btnHistory.setOnClickListener(new View.OnClickListener() {
             @Override
